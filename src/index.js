@@ -1,7 +1,34 @@
-import {initializeApp} from 'firebase/app'
+const addBookForm = document.querySelector('.add')
+const deleteBookForm = document.querySelector('.delete')
+const updateForm = document.querySelector('.update')
+const signupForm = document.querySelector('.signup')
+const loginForm = document.querySelector('.login')
+const logoutButton = document.querySelector('.logout')
+const unsubButton = document.querySelector('.unsub')
+
+
+import { initializeApp } from "firebase/app";
 import {
-  getFirestore, collection, getDocs, addDoc, deleteDoc, doc
+  getFirestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  deleteDoc,
+  doc,
+  query,
+  orderBy,
+  serverTimestamp,
+  updateDoc
 }from 'firebase/firestore'
+
+import{
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  Unsubscribe
+}from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0YGr_sCf08TdVdpp71MfP5WP5yJKTVCM",
@@ -13,40 +40,40 @@ const firebaseConfig = {
 };
 
 //init app
-initializeApp(firebaseConfig)
+initializeApp(firebaseConfig);
 
 // init services
 const database = getFirestore()
+const auth = getAuth()
 
 // collection ref
 const colRef = collection(database, 'books')
 
-// get collection data
-getDocs(colRef)
-  .then((snapshot) =>{
-    let books = []
-    snapshot.docs.forEach((doc) =>{
-        books.push({...doc.data(), id: doc.id, })
-    })
-    console.log(books);
-  })
-  .catch(err => {
-    console.log(err.message);
-  })
+// queries
 
+const q =  query(colRef, orderBy('createAt'))
+// real time collection data
+
+const unsubCol = onSnapshot(q, (snapshot) => {
+  let books = []
+  snapshot.docs.forEach((doc) => {
+      books.push({...doc.data(), id: doc.id, })
+  })
+  console.log(books);
+})
 
 // adding document
 
-const addBookForm = document.querySelector('.add')
 addBookForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
   addDoc(colRef, {
     title: addBookForm.title.value,
     author: addBookForm.author.value,
+    createAt: serverTimestamp()
   })
   .then(() =>{
-    addBookForm.reset()
+    addBookForm.reset();
   })
   .catch(err =>{
     console.log(err.message);
@@ -55,16 +82,88 @@ addBookForm.addEventListener('submit', (e) => {
 
 // deleting document
 
-const deleteBookForm = document.querySelector('.delete')
 deleteBookForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
-  const docRef = doc(database, 'books', deleteBookForm.id.value)
-  deleteDoc(docRef)
+  deleteDoc(doc(database, 'books', deleteBookForm.id.value))
     .then(() =>{
-      deleteBookForm.reset()
+      deleteBookForm.reset();
     })
     .catch(err =>{
       console.log(err.message);
     })
+})
+
+const docRef = doc(database, 'books', 'KAS8HuMGq785F2aFPkfA')
+
+
+const unsubDoc = onSnapshot(docRef, (doc) => {
+  console.log(doc.data(), doc.id);
+})
+
+updateForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+
+  const docRef = doc(database, 'books', updateData.id.value)
+  updateDoc(docRef, {
+    title: 'updated title'
+  })
+  .then(() => {
+    updateForm.reset()
+  })
+})
+
+signupForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  const email = signupForm.email.value
+  const pass = signupForm.password.value
+
+  createUserWithEmailAndPassword(auth, email, pass)
+    .then((cred) => {
+      // console.log('Ура, ты появился: ', cred.user);
+    })
+    .catch((err) => {
+      console.log('Походу тебя не создали, какие-то траблы(',err.message);
+    })
+    signupForm.reset()
+})
+
+logoutButton.addEventListener(('click'), () => {
+  signOut(auth)
+    .then(() => {
+      // console.log('Разлогин)');
+    })
+    .catch((err) => {
+      console.log('Чет чел у тебя проблемы даже с разлогином(');
+    })
+})
+
+loginForm.addEventListener(('submit'), (e) => {
+  e.preventDefault()
+
+  const email = loginForm.email.value
+  const pass = loginForm.password.value
+
+  signInWithEmailAndPassword(auth, email, pass)
+    .then((cred) =>{
+      // console.log('Харош, залогинился!', cred.user);
+    })
+    .catch((err) => {
+      console.log('Плох, не залогинился((', err.message);
+    })
+    loginForm.reset()
+})
+
+
+const unsubAuth = onAuthStateChanged(auth, (user) => {
+  console.log('Статус изменён(хз че за статус, походу ты разлогинился/залогинился). Ну почитай тут:', user);
+})
+
+unsubButton.addEventListener(('click'), () => {
+  console.log('Отписка')
+  unsubCol()
+  unsubDoc()
+  unsubAuth()
 })
