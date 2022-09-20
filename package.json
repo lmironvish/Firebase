@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack serve --open",
     "build": "npm run lint && webpack --mode production",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "predeploy": "yarn build",
     "lint": "npm run lint:eslint && npm run lint:stylelint && npm run lint:prettier",
     "lint:eslint": "eslint --fix --ext \".js\" --ignore-path .eslintignore .",
