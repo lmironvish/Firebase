@@ -1,13 +1,12 @@
-const addBookForm = document.querySelector('.add')
-const deleteBookForm = document.querySelector('.delete')
-const updateForm = document.querySelector('.update')
-const signupForm = document.querySelector('.signup')
-const loginForm = document.querySelector('.login')
-const logoutButton = document.querySelector('.logout')
-const unsubButton = document.querySelector('.unsub')
+const addBookForm = document.querySelector(".add")
+const deleteBookForm = document.querySelector(".delete")
+const updateForm = document.querySelector(".update")
+const signupForm = document.querySelector(".signup")
+const loginForm = document.querySelector(".login")
+const logoutButton = document.querySelector(".logout")
+const unsubButton = document.querySelector(".unsub")
 
-
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app"
 import {
   getFirestore,
   collection,
@@ -18,17 +17,16 @@ import {
   query,
   orderBy,
   serverTimestamp,
-  updateDoc
-}from 'firebase/firestore'
+  updateDoc,
+} from "firebase/firestore"
 
-import{
+import {
   getAuth,
   createUserWithEmailAndPassword,
   signOut,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  Unsubscribe
-}from 'firebase/auth'
+} from "firebase/auth"
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0YGr_sCf08TdVdpp71MfP5WP5yJKTVCM",
@@ -36,85 +34,82 @@ const firebaseConfig = {
   projectId: "fir-9-test-226c4",
   storageBucket: "fir-9-test-226c4.appspot.com",
   messagingSenderId: "710714601989",
-  appId: "1:710714601989:web:4be60f55b44738cca1e26c"
-};
+  appId: "1:710714601989:web:4be60f55b44738cca1e26c",
+}
 
 //init app
-initializeApp(firebaseConfig);
+initializeApp(firebaseConfig)
 
 // init services
 const database = getFirestore()
 const auth = getAuth()
 
 // collection ref
-const colRef = collection(database, 'books')
+const colRef = collection(database, "books")
 
 // queries
 
-const q =  query(colRef, orderBy('createAt'))
+const q = query(colRef, orderBy("createAt"))
 // real time collection data
 
 const unsubCol = onSnapshot(q, (snapshot) => {
   let books = []
   snapshot.docs.forEach((doc) => {
-      books.push({...doc.data(), id: doc.id, })
+    books.push({ ...doc.data(), id: doc.id })
   })
-  console.log(books);
+  console.log(books)
 })
 
 // adding document
 
-addBookForm.addEventListener('submit', (e) => {
+addBookForm.addEventListener("submit", (e) => {
   e.preventDefault()
 
   addDoc(colRef, {
     title: addBookForm.title.value,
     author: addBookForm.author.value,
-    createAt: serverTimestamp()
+    createAt: serverTimestamp(),
   })
-  .then(() =>{
-    addBookForm.reset();
-  })
-  .catch(err =>{
-    console.log(err.message);
-  })
+    .then(() => {
+      addBookForm.reset()
+    })
+    .catch((err) => {
+      console.log(err.message)
+    })
 })
 
 // deleting document
 
-deleteBookForm.addEventListener('submit', (e) => {
+deleteBookForm.addEventListener("submit", (e) => {
   e.preventDefault()
 
-  deleteDoc(doc(database, 'books', deleteBookForm.id.value))
-    .then(() =>{
-      deleteBookForm.reset();
+  deleteDoc(doc(database, "books", deleteBookForm.id.value))
+    .then(() => {
+      deleteBookForm.reset()
     })
-    .catch(err =>{
-      console.log(err.message);
+    .catch((err) => {
+      console.log(err.message)
     })
 })
 
-const docRef = doc(database, 'books', 'KAS8HuMGq785F2aFPkfA')
-
+const docRef = doc(database, "books", "KAS8HuMGq785F2aFPkfA")
 
 const unsubDoc = onSnapshot(docRef, (doc) => {
-  console.log(doc.data(), doc.id);
+  console.log(doc.data(), doc.id)
 })
 
-updateForm.addEventListener('submit', (e) => {
+updateForm.addEventListener("submit", (e) => {
   e.preventDefault()
 
-
-  const docRef = doc(database, 'books', updateData.id.value)
+  const docRef = doc(database, "books", updateForm.id.value)
   updateDoc(docRef, {
-    title: 'updated title'
-  })
-  .then(() => {
+    title: "updated title",
+  }).then(() => {
     updateForm.reset()
   })
 })
 
-signupForm.addEventListener('submit', (e) => {
+signupForm.addEventListener("submit", (e) => {
   e.preventDefault()
 
   const email = signupForm.email.value
@@ -122,47 +117,49 @@ signupForm.addEventListener('submit', (e) => {
 
   createUserWithEmailAndPassword(auth, email, pass)
     .then((cred) => {
-      // console.log('Ура, ты появился: ', cred.user);
+      console.log("Ура, ты появился: ", cred.user)
     })
     .catch((err) => {
-      console.log('Походу тебя не создали, какие-то траблы(',err.message);
+      alert("Походу тебя не создали, какие-то траблы(", err.message)
     })
-    signupForm.reset()
+  signupForm.reset()
 })
 
-logoutButton.addEventListener(('click'), () => {
+logoutButton.addEventListener("click", () => {
   signOut(auth)
     .then(() => {
-      // console.log('Разлогин)');
+      console.log("Разлогин)")
     })
     .catch((err) => {
-      console.log('Чет чел у тебя проблемы даже с разлогином(');
+      alert("Чет чел у тебя проблемы даже с разлогином(", err.message)
     })
 })
 
-loginForm.addEventListener(('submit'), (e) => {
+loginForm.addEventListener("submit", (e) => {
   e.preventDefault()
 
   const email = loginForm.email.value
   const pass = loginForm.password.value
 
   signInWithEmailAndPassword(auth, email, pass)
-    .then((cred) =>{
-      // console.log('Харош, залогинился!', cred.user);
+    .then((cred) => {
+      console.log("Харош, залогинился!", cred.user)
     })
     .catch((err) => {
-      console.log('Плох, не залогинился((', err.message);
+      alert("Плох, не залогинился((", err.message)
     })
-    loginForm.reset()
+  loginForm.reset()
 })
-
 
 const unsubAuth = onAuthStateChanged(auth, (user) => {
-  console.log('Статус изменён(хз че за статус, походу ты разлогинился/залогинился). Ну почитай тут:', user);
+  console.log(
+    "Статус изменён(хз че за статус, походу ты разлогинился/залогинился). Ну почитай тут: ",
+    user
+  )
 })
 
-unsubButton.addEventListener(('click'), () => {
-  console.log('Отписка')
+unsubButton.addEventListener("click", () => {
+  console.log("Отписка")
   unsubCol()
   unsubDoc()
   unsubAuth()
