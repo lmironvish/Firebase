@@ -92,12 +92,6 @@ deleteBookForm.addEventListener("submit", (e) => {
     })
 })
 
-const docRef = doc(database, "books", "KAS8HuMGq785F2aFPkfA")
-
-const unsubDoc = onSnapshot(docRef, (doc) => {
-  console.log(doc.data(), doc.id)
-})
-
 updateForm.addEventListener("submit", (e) => {
   e.preventDefault()
 
@@ -161,6 +155,5 @@ const unsubAuth = onAuthStateChanged(auth, (user) => {
 unsubButton.addEventListener("click", () => {
   console.log("Отписка")
   unsubCol()
-  unsubDoc()
   unsubAuth()
 })

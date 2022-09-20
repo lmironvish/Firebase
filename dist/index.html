@@ -7,70 +7,75 @@
     <title>Firebase 9</title>
     <meta name="author" content="Else" />
     <link rel="icon" href="favicon.ico" />
-    <link rel="stylesheet" href="style.css" />
   </head>
   <body class="body">
     <noscript>
       <strong>Caution your скрипты is отключены!</strong>
     </noscript>
-      <br><h1>Ого, Firebase! Моё reverence</h1><br>
-      <h2>Чекай, тут целый collection with книгами, ну ахуеть now!</h2><br>
+    <br />
+    <h1>Ого, Firebase! Моё reverence</h1>
+    <br />
+    <h2>Чекай, тут целый collection with книгами, ну ахуеть now!</h2>
+    <br />
 
-      <h4>Слышб, ну сначала регистрация, no offence)</h4>
+    <h4>Слышб, ну сначала регистрация, no offence)</h4>
 
-      <form class="signup">
-        <label for="email">Your email:</label><br>
-        <input type="email" name="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" name="password" required><br><br>
-        <button>Signup, ура</button><br><br>
-      </form>
+    <form class="signup">
+      <label for="email">Your email:</label><br />
+      <input type="email" name="email" required /><br />
+      <label for="password">Password:</label><br />
+      <input type="password" name="password" required /><br /><br />
+      <button>Signup, ура</button><br /><br />
+    </form>
 
-      <h4>НО! Если у тебя уже есть акк, логинься</h4>
+    <h4>НО! Если у тебя уже есть акк, логинься</h4>
 
-      <form class="login">
-        <label for="email">Your email:</label><br>
-        <input type="email" name="email" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" name="password" required><br><br>
-        <button>Login сюда</button><br><br>
-      </form>
+    <form class="login">
+      <label for="email">Your email:</label><br />
+      <input type="email" name="email" required /><br />
+      <label for="password">Password:</label><br />
+      <input type="password" name="password" required /><br /><br />
+      <button>Login сюда</button><br /><br />
+    </form>
 
-      <h4>Если хошь, разлогинься, это твоя жизнь, твои rules</h4>
-      <button class="logout">Logout отсюда</button>
+    <h4>Если хошь, разлогинься, это твоя жизнь, твои rules</h4>
+    <button class="logout">Logout отсюда</button>
 
-      <h4>Если хошь, отпишись, это твоя жизнь, твои rules, нам похуй честно говоря, одним больше, одним меньше</h4>
-      <button class="unsub">Unsubscribe от этого всего</button>
+    <h4>
+      Если хошь, отпишись, это твоя жизнь, твои rules, нам похуй честно говоря,
+      одним больше, одним меньше
+    </h4>
+    <button class="unsub">Unsubscribe от этого всего</button>
 
-      <h4>Look, тут добавлять книжку...</h4>
+    <h4>Look, тут добавлять книжку...</h4>
 
-      <form class="add">
-        <label for="title">Book title:</label><br>
-        <input type="text" name="title" required><br>
-        <label for="author">Book author:</label><br>
-        <input type="text" name="author" required><br><br>
-        <button>add a new книжку</button><br><br>
-      </form>
+    <form class="add">
+      <label for="title">Book title:</label><br />
+      <input type="text" name="title" required /><br />
+      <label for="author">Book author:</label><br />
+      <input type="text" name="author" required /><br /><br />
+      <button>add a new книжку</button><br /><br />
+    </form>
 
+    <h4>...а тут delete книжку(бля, как они figured it out🤩)</h4>
 
-      <h4>...а тут delete книжку(бля, как они figured it out🤩)</h4>
+    <form class="delete">
+      <label for="id">Document id:</label><br />
+      <input type="text" name="id" required /><br /><br />
+      <button>delete a книжку</button>
+    </form>
 
-      <form class="delete">
-        <label for="id">Document id:</label><br>
-        <input type="text" name="id" required><br><br>
-        <button>delete a книжку</button>
-      </form>
+    <h4>
+      update книжек...видимо какое-то обновление, новые данные пришли, какие-то
+      новости
+    </h4>
 
-      <h4>update книжек...видимо какое-то обновление, новые данные пришли, какие-то новости</h4>
-
-      <form class="update">
-        <label for="id">Document id:</label><br>
-        <input type="text" name="id" required><br><br>
-        <button>обнова🤪</button>
-      </form>
-
-    </div>
+    <form class="update">
+      <label for="id">Document id:</label><br />
+      <input type="text" name="id" required /><br /><br />
+      <button>обнова🤪</button>
+    </form>
 
     <script src="script.js"></script>
   </body>
-  </html>
+</html>
